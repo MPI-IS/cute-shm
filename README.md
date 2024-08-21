@@ -9,8 +9,6 @@ Using the shared memory allows to share numpy arrays across multiple processes r
 
 ## Table of Contents
 
-- [cute-shm](#cute-shm)
-  - [Table of Contents](#table-of-contents)
   - [Requirements](#requirements)
   - [Installation](#installation)
   - [Usage](#usage)
