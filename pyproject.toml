@@ -1,0 +1,37 @@
+[tool.poetry]
+name = "cute-shm"
+version = "0.1.0"
+description = "managing np arrays stored in the shared memory"
+authors = [
+	"Vincent Berenz <vberenz@tuebingen.mpg.de>",
+]
+packages = [
+	 { include = "cute_shm" },
+] 
+
+[tool.poetry.dependencies]
+python = "^3.9"
+numpy = "^2.0.1"
+tomli = "^2.0.1"
+tomli-w = "^1.0.0"
+psutil = "^6.0.0"
+rich = "^13.7.1"
+h5py = "^3.11.0"
+filelock = "^3.15.4"
+
+[tool.poetry.group.dev.dependencies]
+mypy = "^1.11.1"
+black = "^24.8.0"
+pytest = "^8.3.2"
+types-psutil = "^6.0.0.20240621"
+pandas-stubs = "^2.2.2.240807"
+isort = "^5.13.2"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.scripts]
+cute-shm-hdf5 = "cute_shm.main:hdf5"
+cute-shm-unlink = "cute_shm.main:unlink_shm"
+cute-shm-list = "cute_shm.main:display_projects"
