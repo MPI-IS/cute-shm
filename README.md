@@ -192,7 +192,7 @@ If a process updates the values of the arrays, locking should be implemented usi
 either the [`multiprocessing.Lock`](https://docs.python.org/3/library/multiprocessing.html#synchronization-between-processes)
 or a [`filelock`](https://py-filelock.readthedocs.io/en/latest/).
 
-See for example the `demo_server.py`  and the `demo_client.py` demos [here](demos/README.md).
+See for example the `demo_server.py`  and the `demo_client.py` demos [here](demos/).
 
 ### Under the hood
 
@@ -263,7 +263,7 @@ Alternatively to use the API or the command line to free the shared memory, you 
 
 ## Demos
 
-For examples: [demos](demos/README.md).
+For examples: [demos](demos/).
 
 ## Warnings
 
