@@ -1,4 +1,4 @@
-[![Python package](https://github.com/<your-username>/<your-repo>/actions/workflows/python-app.yml/badge.svg)](https://github.com/<your-username>/<your-repo>/actions/workflows/python-app.yml)
+[![Python package](https://github.com/MPI-IS/cute-shm/actions/workflows/tests.yml/badge.svg)](https://github.com/MPI-IS/cute-shm/actions/workflows/tests.yml)
 
 
 # Cute-Shm
