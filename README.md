@@ -7,6 +7,29 @@
 cute-shm is a convenience wrapper over Python's multiprocessing shared memory. It provides an easy-to-use API for managing shared memory numpy arrays and HDF5 files.
 Using the shared memory allows to share numpy arrays across multiple processes running on the same node.
 
+## Table of Contents
+
+- [cute-shm](#cute-shm)
+  - [Table of Contents](#table-of-contents)
+  - [Requirements](#requirements)
+  - [Installation](#installation)
+  - [Usage](#usage)
+    - [API](#api)
+      - [sharing numpy arrays](#sharing-numpy-arrays)
+      - [sharing content of hdf5 files](#sharing-content-of-hdf5-files)
+      - [Logging](#logging)
+      - [Typing hints](#typing-hints)
+      - [Concurrent access](#concurrent-access)
+    - [Under the hood](#under-the-hood)
+    - [Command line executables](#command-line-executables)
+    - ["Manual" cleaning of the shared memory](#manual-cleaning-of-the-shared-memory)
+  - [Demos](#demos)
+  - [Warnings](#warnings)
+    - [Bus error](#bus-error)
+    - [Garbage collection of the shared memory](#garbage-collection-of-the-shared-memory)
+  - [Authorship, Copyright, and License](#authorship-copyright-and-license)
+
+
 ## Requirements
 
 Python 3.10 or later.
