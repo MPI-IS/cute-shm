@@ -1,16 +1,19 @@
 [tool.poetry]
 name = "cute-shm"
-version = "0.1.0"
+version = "1.0"
 description = "managing np arrays stored in the shared memory"
 authors = [
 	"Vincent Berenz <vberenz@tuebingen.mpg.de>",
 ]
 packages = [
 	 { include = "cute_shm" },
-] 
+]
+readme = "README.md"
+repository = "https://github.com/MPI-IS/cute-shm"
+homepage = "https://github.com/MPI-IS/cute-shm"
 
 [tool.poetry.dependencies]
-python = "^3.9"
+python = "^3.10"
 numpy = "^2.0.1"
 tomli = "^2.0.1"
 tomli-w = "^1.0.0"

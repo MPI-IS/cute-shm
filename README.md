@@ -1,10 +1,32 @@
-[![Python package](https://github.com/<your-username>/<your-repo>/actions/workflows/python-app.yml/badge.svg)](https://github.com/<your-username>/<your-repo>/actions/workflows/python-app.yml)
+[![Python package](https://github.com/MPI-IS/cute-shm/actions/workflows/tests.yml/badge.svg)](https://github.com/MPI-IS/cute-shm/actions/workflows/tests.yml)
+[![PyPI version](https://img.shields.io/pypi/v/cute-shm.svg)](https://pypi.org/project/cute-shm/)
 
 
-# Cute-Shm
+# cute-shm
 
-Cute-Shm is a convenience wrapper over Python's multiprocessing shared memory. It provides an easy-to-use API for managing shared memory numpy arrays and HDF5 files.
+cute-shm is a convenience wrapper over Python's multiprocessing shared memory. It provides an easy-to-use API for managing shared memory numpy arrays and HDF5 files.
 Using the shared memory allows to share numpy arrays across multiple processes running on the same node.
+
+## Table of Contents
+
+  - [Requirements](#requirements)
+  - [Installation](#installation)
+  - [Usage](#usage)
+    - [API](#api)
+      - [sharing numpy arrays](#sharing-numpy-arrays)
+      - [sharing content of hdf5 files](#sharing-content-of-hdf5-files)
+      - [Logging](#logging)
+      - [Typing hints](#typing-hints)
+      - [Concurrent access](#concurrent-access)
+    - [Under the hood](#under-the-hood)
+    - [Command line executables](#command-line-executables)
+    - ["Manual" cleaning of the shared memory](#manual-cleaning-of-the-shared-memory)
+  - [Demos](#demos)
+  - [Warnings](#warnings)
+    - [Bus error](#bus-error)
+    - [Garbage collection of the shared memory](#garbage-collection-of-the-shared-memory)
+  - [Authorship, Copyright, and License](#authorship-copyright-and-license)
+
 
 ## Requirements
 
@@ -12,7 +34,7 @@ Python 3.10 or later.
 
 ## Installation
 
-You can install Cute-Shm using pip:
+You can install cute-shm using pip:
 
 ```
 pip install cute-shm
@@ -38,8 +60,6 @@ arrays = {"a": a, "b": {"b1": b1, "b2": b2}}
 
 # An arbitrary name for this projet
 project_name = "myproject"
-
-# transfer arrays to shared memory
 
 # set to True if the shared memory should not be cleaned upon exit
 # i.e. another process may need to access it later
@@ -185,6 +205,16 @@ a_data: np.ndarray = a["data"]
 a_meta: cute_shm.SharedArrayMeta = a["meta"]
 ```
 
+#### Concurrent access 
+Once numpy arrays are transferred to the shared memory and no longer updated, 
+they can be accessed by multiple processes concurrently without lock protection.
+
+If a process updates the values of the arrays, locking should be implemented using 
+either the [`multiprocessing.Lock`](https://docs.python.org/3/library/multiprocessing.html#synchronization-between-processes)
+or a [`filelock`](https://py-filelock.readthedocs.io/en/latest/).
+
+See for example the `demo_server.py`  and the `demo_client.py` demos [here](demos/).
+
 ### Under the hood
 
 - when the arrays are transferred to shared memory, a toml file is created in the `/tmp/cute-shm` directory. Its name is based on the project name.
@@ -252,12 +282,18 @@ Alternatively to use the API or the command line to free the shared memory, you 
 - reboot the computer
 - delete files prefixed by `cute-shm` in the `/dev/shm` folder and related toml files in the `/tmp/cute-shm` folder.
 
+## Demos
+
+For examples: [demos](demos/).
+
 ## Warnings
 
-### Bus error
+### Bus error (hitting RAM limits)
 
 If the RAM of the computer gets full, transfer to the shared memory will not only fail, the process will also crash with a bus error.
 This is a system error that cannot be managed by the python exception handling.
+
+It has also been observed that the process becomes stuck when the RAM limit is exceeded.
 
 ### Garbage collection of the shared memory
 
@@ -305,7 +341,7 @@ def get_np(project_name: str)->np.ndarray:
 
     # meta["shm"] is a reference to the shared memory segment.
     # It will be garbage collected, along with the meta dictionary,
-    #  when the function exits.
+    # when the function exits.
     return data
 
 a: np.ndarray = get_np("myproject")
