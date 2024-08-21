@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "cute-shm"
-version = "0.1.1"
+version = "1.0"
 description = "managing np arrays stored in the shared memory"
 authors = [
 	"Vincent Berenz <vberenz@tuebingen.mpg.de>",

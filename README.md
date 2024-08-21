@@ -288,7 +288,7 @@ For examples: [demos](demos/).
 
 ## Warnings
 
-### Bus error
+### Bus error (hitting RAM limits)
 
 If the RAM of the computer gets full, transfer to the shared memory will not only fail, the process will also crash with a bus error.
 This is a system error that cannot be managed by the python exception handling.
