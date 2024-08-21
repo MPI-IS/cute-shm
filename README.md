@@ -2,9 +2,9 @@
 [![PyPI version](https://img.shields.io/pypi/v/cute-shm.svg)](https://pypi.org/project/cute-shm/)
 
 
-# Cute-Shm
+# cute-shm
 
-Cute-Shm is a convenience wrapper over Python's multiprocessing shared memory. It provides an easy-to-use API for managing shared memory numpy arrays and HDF5 files.
+cute-shm is a convenience wrapper over Python's multiprocessing shared memory. It provides an easy-to-use API for managing shared memory numpy arrays and HDF5 files.
 Using the shared memory allows to share numpy arrays across multiple processes running on the same node.
 
 ## Requirements
@@ -13,7 +13,7 @@ Python 3.10 or later.
 
 ## Installation
 
-You can install Cute-Shm using pip:
+You can install cute-shm using pip:
 
 ```
 pip install cute-shm
@@ -39,8 +39,6 @@ arrays = {"a": a, "b": {"b1": b1, "b2": b2}}
 
 # An arbitrary name for this projet
 project_name = "myproject"
-
-# transfer arrays to shared memory
 
 # set to True if the shared memory should not be cleaned upon exit
 # i.e. another process may need to access it later
@@ -253,6 +251,10 @@ Alternatively to use the API or the command line to free the shared memory, you 
 - reboot the computer
 - delete files prefixed by `cute-shm` in the `/dev/shm` folder and related toml files in the `/tmp/cute-shm` folder.
 
+## Demos
+
+For examples and demos: [demos README](demos/README.md).
+
 ## Warnings
 
 ### Bus error
@@ -306,7 +308,7 @@ def get_np(project_name: str)->np.ndarray:
 
     # meta["shm"] is a reference to the shared memory segment.
     # It will be garbage collected, along with the meta dictionary,
-    #  when the function exits.
+    # when the function exits.
     return data
 
 a: np.ndarray = get_np("myproject")
