@@ -1,4 +1,5 @@
 [![Python package](https://github.com/MPI-IS/cute-shm/actions/workflows/tests.yml/badge.svg)](https://github.com/MPI-IS/cute-shm/actions/workflows/tests.yml)
+[![PyPI version](https://img.shields.io/pypi/v/cute-shm.svg)](https://pypi.org/project/cute-shm/)
 
 
 # Cute-Shm
