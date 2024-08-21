@@ -184,6 +184,16 @@ a_data: np.ndarray = a["data"]
 a_meta: cute_shm.SharedArrayMeta = a["meta"]
 ```
 
+#### Concurrent access 
+Once numpy arrays are transferred to the shared memory and no longer updated, 
+they can be accessed by multiple processes concurrently without lock protection.
+
+If a process updates the values of the arrays, locking should be implemented using 
+either the [`multiprocessing.Lock`](https://docs.python.org/3/library/multiprocessing.html#synchronization-between-processes)
+or a [`filelock`](https://py-filelock.readthedocs.io/en/latest/).
+
+See for example the `demo_server.py`  and the `demo_client.py` demos [here](demos/README.md).
+
 ### Under the hood
 
 - when the arrays are transferred to shared memory, a toml file is created in the `/tmp/cute-shm` directory. Its name is based on the project name.
@@ -253,7 +263,7 @@ Alternatively to use the API or the command line to free the shared memory, you 
 
 ## Demos
 
-For examples and demos: [demos README](demos/README.md).
+For examples: [demos](demos/README.md).
 
 ## Warnings
 
