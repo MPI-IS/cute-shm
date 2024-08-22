@@ -143,9 +143,7 @@ def unlink(project: str) -> None:
                     continue
                 if shm is None:
                     try:
-                        shm = shared_memory.SharedMemory(
-                            name=str(v_["shm_name"])
-                        )
+                        shm = shared_memory.SharedMemory(name=str(v_["shm_name"]))
                     except FileNotFoundError:
                         logger.warning(f"shared memory '{k}' not found")
                         continue
@@ -175,6 +173,7 @@ def unregister(meta_dict: MetaArrayDict) -> None:
     for k, v in meta_dict.items():
         if "shm_name" in v:
             logger.debug(f"persistence: unregistering {v['shm_name']}")
+            resource_tracker.register(v["shm_private_name"], "shared_memory")
             resource_tracker.unregister(v["shm_private_name"], "shared_memory")
         else:
             unregister(v)  # type: ignore
