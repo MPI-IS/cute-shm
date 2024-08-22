@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "cute-shm"
-version = "1.0"
+version = "1.01"
 description = "managing np arrays stored in the shared memory"
 authors = [
 	"Vincent Berenz <vberenz@tuebingen.mpg.de>",
@@ -38,3 +38,4 @@ build-backend = "poetry.core.masonry.api"
 cute-shm-hdf5 = "cute_shm.main:hdf5"
 cute-shm-unlink = "cute_shm.main:unlink_shm"
 cute-shm-list = "cute_shm.main:display_projects"
+cute-shm-evaluate = "cute_shm.main:evaluate"

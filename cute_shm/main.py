@@ -13,6 +13,7 @@ from rich.table import Table
 import cute_shm
 
 from .core import Project2Toml, array_size, logger
+from .evaluation import evaluation
 
 
 def hdf5():
@@ -323,3 +324,7 @@ def display_projects():
         _display_projects_info()
     else:
         _display_projects_full()
+
+
+def evaluate():
+    evaluation()
