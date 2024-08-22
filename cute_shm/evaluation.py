@@ -160,33 +160,39 @@ def evaluation():
 
     console = Console()
     table = Table(title="Experiment Results")
-    table.add_column("Access Type", justify="center")
     table.add_column("Number of Processes", justify="center")
-    table.add_column(
-        "Average Iteration Frequency (iterations/second)", justify="center"
-    )
-    table.add_column("Max RAM Usage", justify="center")
+    table.add_column("Average Iteration Frequency (Shared Memory)", justify="center")
+    table.add_column("Average Iteration Frequency (Direct Access)", justify="center")
+    table.add_column("Max RAM Usage (Shared Memory)", justify="center")
+    table.add_column("Max RAM Usage (Direct Access)", justify="center")
 
     data_dict = hdf5_to_dict(hdf5_path)
 
     with unlinked_hdf5_to_shm(hdf5_path, project_name, overwrite=True, progress=False):
 
         for num_processes in [1, 5, 10, 15]:
-            for use_shm in [True, False]:
-                access_type = "Shared Memory" if use_shm else "Direct Access"
-                result = run_experiment(
-                    hdf5_path,
-                    project_name,
-                    num_processes,
-                    iterations,
-                    use_shm,
-                    data_dict,
-                )
-                table.add_row(
-                    access_type,
-                    str(result["num_processes"]),
-                    f"{result['avg_frequency']:.2f}",
-                    psutil._common.bytes2human(result["max_ram_usage"]),
-                )
+            result_shm = run_experiment(
+                hdf5_path,
+                project_name,
+                num_processes,
+                iterations,
+                True,
+                data_dict,
+            )
+            result_direct = run_experiment(
+                hdf5_path,
+                project_name,
+                num_processes,
+                iterations,
+                False,
+                data_dict,
+            )
+            table.add_row(
+                str(result_shm["num_processes"]),
+                f"{result_shm['avg_frequency']:.2f}",
+                f"{result_direct['avg_frequency']:.2f}",
+                psutil._common.bytes2human(result_shm["max_ram_usage"]),
+                psutil._common.bytes2human(result_direct["max_ram_usage"]),
+            )
 
     console.print(table)
