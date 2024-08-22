@@ -152,7 +152,7 @@ def evaluation():
     )
     args = parser.parse_args()
 
-    # logging.basicConfig(level=logging.DEBUG)
+    logging.basicConfig(level=logging.INFO)
 
     hdf5_path = Path(args.hdf5_file)
     project_name = args.project_name
@@ -166,11 +166,32 @@ def evaluation():
     table.add_column("Max RAM Usage (Shared Memory)", justify="center")
     table.add_column("Max RAM Usage (Direct Access)", justify="center")
 
+    logging.info("Loading data from HDF5 file to the RAM (direct, no shared memory)")
     data_dict = hdf5_to_dict(hdf5_path)
 
-    with unlinked_hdf5_to_shm(hdf5_path, project_name, overwrite=True, progress=False):
+    logging.info("Running experiments with direct access to the RAM")
+    direct_results = []
+    for num_processes in [1, 5, 10, 15]:
+        logging.info(f"Running experiment with {num_processes} processes")
+        result_direct = run_experiment(
+            hdf5_path,
+            project_name,
+            num_processes,
+            iterations,
+            False,
+            data_dict,
+        )
+        direct_results.append(result_direct)
 
+    del data_dict
+    data_dict = None
+
+    logging.info("Loading data from HDF5 file to the shared memory")
+    with unlinked_hdf5_to_shm(hdf5_path, project_name, overwrite=True, progress=True):
+        logging.info("Running experiments with shared memory")
+        shm_results = []
         for num_processes in [1, 5, 10, 15]:
+            logging.info(f"Running experiment with {num_processes} processes")
             result_shm = run_experiment(
                 hdf5_path,
                 project_name,
@@ -179,20 +200,15 @@ def evaluation():
                 True,
                 data_dict,
             )
-            result_direct = run_experiment(
-                hdf5_path,
-                project_name,
-                num_processes,
-                iterations,
-                False,
-                data_dict,
-            )
-            table.add_row(
-                str(result_shm["num_processes"]),
-                f"{result_shm['avg_frequency']:.2f}",
-                f"{result_direct['avg_frequency']:.2f}",
-                psutil._common.bytes2human(result_shm["max_ram_usage"]),
-                psutil._common.bytes2human(result_direct["max_ram_usage"]),
-            )
+            shm_results.append(result_shm)
+
+    for direct_result, shm_result in zip(direct_results, shm_results):
+        table.add_row(
+            str(direct_result["num_processes"]),
+            f"{shm_result['avg_frequency']:.2f}",
+            f"{direct_result['avg_frequency']:.2f}",
+            psutil._common.bytes2human(shm_result["max_ram_usage"]),
+            psutil._common.bytes2human(direct_result["max_ram_usage"]),
+        )
 
     console.print(table)
