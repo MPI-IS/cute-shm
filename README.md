@@ -88,6 +88,9 @@ shm_arrays = cute.shm_to_arrays(project_name, persistent=persistent)
 # - "meta": related metadata
 a: np.ndarray = shm_arrays["a"]["data"]
 
+# note: 'a' is not a copy of the array located in the shared memory.
+#       It is a numpy array which data buffer points to the shared memory.
+
 # meta data consists mostly of things you will certainly not need.
 a_meta: cute.SharedArrayMeta = shm_arrays["a"]["meta"]
 a_meta["shape"] # the shape of the array, same as a.shape
