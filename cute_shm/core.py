@@ -89,6 +89,8 @@ def bytes_to_human(size_bytes: int) -> str:
     if size_bytes == 0:
         return "0 bytes"
     size_name = ("bytes", "KB", "MB", "GB", "TB", "PB")
+    if size_bytes <= 0:
+        return "<unknown>"
     i = int(math.floor(math.log(size_bytes, 1024)))
     p = math.pow(1024, i)
     s = round(size_bytes / p, 2)
